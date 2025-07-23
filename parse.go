@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -68,7 +69,7 @@ func injectTag(contents []byte, area textArea, removeTagComment bool) (injected 
 	cti := newTagItems(area.CurrentTag)
 	iti := newTagItems(area.InjectTag)
 	ti := cti.override(iti)
-	expr = rInject.ReplaceAll(expr, []byte(fmt.Sprintf("`%s`", ti.format())))
+	expr = rInject.ReplaceAll(expr, []byte(fmt.Sprintf("`%s`", regexp.QuoteMeta(ti.format()))))
 
 	if removeTagComment {
 		strippedComment := make([]byte, area.CommentEnd-area.CommentStart)
